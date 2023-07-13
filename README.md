@@ -1,3 +1,18 @@
+# 🚧Work in progress🚧
+
+# Chess profile analyzer
+
+App for analyzing your and yours opponents best opennings on lichess.org
+
+## Technologies
+
+- Next.js
+- Typescript
+- Material UI
+- TanStack Query
+- Redux
+- Zod
+
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 ## Getting Started
