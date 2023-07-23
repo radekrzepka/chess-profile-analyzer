@@ -8,10 +8,12 @@ App for analyzing your and yours opponents best opennings on lichess.org
 
 - Next.js
 - Typescript
-- Material UI
+- Tailwind CSS
 - TanStack Query
 - Redux
 - Zod
+- react-hook-form
+- Recharts
 
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 

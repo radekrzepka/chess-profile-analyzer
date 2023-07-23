@@ -1,9 +1,7 @@
-import { Button } from "@mui/material";
-
 const Home = () => {
 	return (
 		<main>
-			<Button>Test</Button>
+			<h1 className="text-center">chess-profile-analyzer</h1>
 		</main>
 	);
 };
