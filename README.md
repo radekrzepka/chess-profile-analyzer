@@ -9,7 +9,6 @@ App for analyzing your and yours opponents best opennings on lichess.org
 - Next.js
 - Typescript
 - Tailwind CSS
-- TanStack Query
 - Redux
 - Zod
 - react-hook-form
