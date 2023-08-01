@@ -2,6 +2,7 @@ import { FC } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import ChessPawnIcon from "./../assets/chess-pawn.svg";
+import NavigationListItem from "@/components/navigation/navigation-list-item";
 
 interface NavigationProps {}
 
@@ -15,15 +16,15 @@ const Navigation: FC<NavigationProps> = ({}) => {
                </Link>
             </li>
             <div className="flex w-full items-center justify-around gap-4 text-center md:w-auto md:justify-center md:gap-6">
-               <li>
-                  <Link href="/analysis">Analysis</Link>
-               </li>
-               <li>
-                  <Link href="/openings">Openings</Link>
-               </li>
-               <li>
-                  <Link href="/previous-analysis">Previous analysis</Link>
-               </li>
+               <NavigationListItem path="/analysis">
+                  Analysis
+               </NavigationListItem>
+               <NavigationListItem path="/openings">
+                  Openings
+               </NavigationListItem>
+               <NavigationListItem path="/previous-analysis">
+                  Previous analysis
+               </NavigationListItem>
             </div>
          </ul>
       </nav>
