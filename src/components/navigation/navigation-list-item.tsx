@@ -20,7 +20,10 @@ const NavigationListItem: FC<NavigationListItemProps> = ({
    return (
       <li className="transition-all hover:text-gray-400">
          <Link
-            className={classNames(isSelected && "text-gray-400")}
+            className={classNames(
+               isSelected && "bg-primary text-background hover:text-gray-600",
+               "rounded-xl px-6 py-2",
+            )}
             href={path}
          >
             {children}
