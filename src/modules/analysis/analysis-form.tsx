@@ -6,10 +6,13 @@ import TextInput from "@/components/ui/text-input";
 import { analysisFormSchema, type AnalysisForm } from "./analysis-form-schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import AnalysisFormCard from "./analysis-form-card";
+import classNames from "classnames";
 
-interface AnalysisFormProps {}
+interface AnalysisFormProps {
+   className?: string;
+}
 
-const AnalysisForm: FC<AnalysisFormProps> = ({}) => {
+const AnalysisForm: FC<AnalysisFormProps> = ({ className }) => {
    const {
       register,
       handleSubmit,
@@ -22,21 +25,9 @@ const AnalysisForm: FC<AnalysisFormProps> = ({}) => {
    console.log(watch());
 
    return (
-      <form>
-         <div className="mt-4">
+      <form className={classNames(className)}>
+         <div>
             <AnalysisFormCard label="1. Enter your username" firstChild={true}>
-               <TextInput
-                  type="text"
-                  id="username"
-                  register={register}
-                  name="username"
-               />
-               <TextInput
-                  type="text"
-                  id="username"
-                  register={register}
-                  name="username"
-               />
                <TextInput
                   type="text"
                   id="username"
