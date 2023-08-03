@@ -1,6 +1,7 @@
 import { FC } from "react";
 import AnalysisForm from "@/modules/analysis/analysis-form";
-import Board from "@/modules/analysis/board";
+import Board from "@/components/board";
+import ProfileCard from "@/components/profile-card";
 
 interface PageProps {}
 
@@ -12,6 +13,7 @@ const Page: FC<PageProps> = ({}) => {
          </h1>
          <Board className="row-start-3 lg:row-start-2" />
          <AnalysisForm className="row-start-2 mb-4 lg:row-start-2" />
+         <ProfileCard />
       </div>
    );
 };

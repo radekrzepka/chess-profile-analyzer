@@ -2,7 +2,7 @@
 
 import { FC } from "react";
 import { type SubmitHandler, useForm } from "react-hook-form";
-import TextInput from "@/components/ui/text-input";
+import TextInput from "@/components/text-input";
 import { analysisFormSchema, type AnalysisForm } from "./analysis-form-schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import AnalysisFormCard from "./analysis-form-card";
