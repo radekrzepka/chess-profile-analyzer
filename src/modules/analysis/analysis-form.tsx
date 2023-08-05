@@ -22,8 +22,6 @@ const AnalysisForm: FC<AnalysisFormProps> = ({ className }) => {
       resolver: zodResolver(analysisFormSchema),
    });
 
-   console.log(watch());
-
    return (
       <form className={classNames(className)}>
          <div>

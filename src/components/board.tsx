@@ -12,7 +12,7 @@ const Board: FC<BoardProps> = ({ className }) => {
    return (
       <div
          className={classNames(
-            "w-3/5 place-self-center self-center lg:w-full",
+            "w-full place-self-center self-center lg:w-full",
             className,
          )}
       >
