@@ -1,7 +1,9 @@
 const Home = () => {
    return (
       <>
-         <h1 className="mb-4 text-5xl">Welcome in lichess profile analyzer</h1>
+         <h1 className="mb-4 text-center text-4xl">
+            Welcome in lichess profile analyzer
+         </h1>
          <div className="grid md:grid-cols-[3fr_2fr]">
             <div className="text-lg">
                <p className="mb-3">
