@@ -1,4 +1,4 @@
-import { AnalysisForm } from "@/modules/analysis/analysis-form-schema";
+import { AnalysisForm } from "@/modules/analysis/form/analysis-form-schema";
 import { format, parseISO } from "date-fns";
 
 const LICHESS_API_MIN_TIMESTAMP = 1356998400070;

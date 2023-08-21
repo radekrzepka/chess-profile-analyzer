@@ -18,7 +18,7 @@ import { User } from "@/types/user";
 import { RatingHistory } from "@/types/rating-history";
 import LabelInput from "@/components/ui/label-input";
 import CheckboxFilter from "@/components/ui/checkbox-filter";
-import checkboxesOptions from "./checkboxes-options";
+import checkboxesOptions from "../checkboxes-options";
 import fetchGamesUrl from "@/utils/fetch-games-url";
 
 interface AnalysisFormProps {

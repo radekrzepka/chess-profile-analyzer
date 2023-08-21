@@ -1,10 +1,12 @@
+import Image from "next/image";
+
 const Home = () => {
    return (
       <>
          <h1 className="mb-4 text-center text-4xl">
             Welcome in lichess profile analyzer
          </h1>
-         <div className="grid md:grid-cols-[3fr_2fr]">
+         <div className="grid gap-4 xl:grid-cols-[3fr_2fr]">
             <div className="text-lg">
                <p className="mb-3">
                   Welcome to our chess analysis web app, where we bring the
@@ -55,7 +57,15 @@ const Home = () => {
                   continuous improvement in the world of chess!
                </p>
             </div>
-            <div>{/* TODO: Add images of app when app ready */}</div>
+            <div>
+               <Image
+                  width={900}
+                  height={500}
+                  src="/app-images/app_1.png"
+                  alt="Photo of analysis form"
+                  className="rounded border border-text p-2"
+               />
+            </div>
          </div>
       </>
    );

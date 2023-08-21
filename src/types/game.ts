@@ -2,7 +2,7 @@ import { Variant } from "@/enums/variant";
 import { Player } from "./player";
 import { Color } from "@/enums/color";
 
-export type Game = {
+export interface Game {
    id: string;
    rated: boolean;
    variant: Variant;
@@ -27,4 +27,4 @@ export type Game = {
       increment: number;
       totalTime: number;
    };
-};
+}

@@ -1,7 +1,7 @@
-export type User = {
+export interface User {
    id: string;
    username: string;
-   perfs?: Perfs;
+   perfs: Perfs;
    createdAt: number;
    disabled: boolean;
    tosViolation: boolean;
@@ -19,35 +19,26 @@ export type User = {
    following: boolean;
    blocking: boolean;
    followsYou: boolean;
-};
+}
 
-type Perfs = {
-   chess960?: Perf;
-   atomic?: Perf;
-   racingKings?: Perf;
+export interface Perfs {
    ultraBullet?: Perf;
-   blitz?: Perf;
-   kingOfTheHill?: Perf;
    bullet?: Perf;
-   correspondence?: Perf;
-   horde?: Perf;
-   puzzle?: Perf;
-   classical?: Perf;
+   blitz?: Perf;
    rapid?: Perf;
-   storm?: Perf;
-   racer?: Perf;
-   streak?: Perf;
-};
+   classical?: Perf;
+   puzzle?: Perf;
+}
 
-type Perf = {
+export interface Perf {
    games: number;
    rating: number;
    rd?: number;
-   prog?: number;
+   prog: number;
    prov?: boolean;
-};
+}
 
-type UserProfile = {
+interface UserProfile {
    country?: string;
    location?: string;
    bio?: string;
@@ -57,14 +48,14 @@ type UserProfile = {
    uscfRating?: number;
    ecfRating?: number;
    links?: string;
-};
+}
 
-type PlayTime = {
+interface PlayTime {
    total: number;
    tv: number;
-};
+}
 
-type Count = {
+interface Count {
    all: number;
    rated: number;
    ai: number;
@@ -78,4 +69,4 @@ type Count = {
    playing: number;
    import: number;
    me: number;
-};
+}

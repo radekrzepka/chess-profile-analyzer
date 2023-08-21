@@ -1,6 +1,6 @@
 import { Variant } from "@/enums/variant";
 
-export type RatingHistory = {
+export interface RatingHistory {
    name: Variant;
    points: number[][];
-};
+}

@@ -1,8 +1,8 @@
 "use client";
 
-import AnalysisForm from "@/modules/analysis/analysis-form";
+import AnalysisForm from "@/modules/analysis/form/analysis-form";
+import AnalysisResults from "@/modules/analysis/results/analysis-results";
 import Board from "@/components/board";
-import ProfileCard from "@/components/profile-card";
 import { useState } from "react";
 import { Game } from "@/types/game";
 import { User } from "@/types/user";
@@ -25,7 +25,11 @@ const Page = () => {
             setUserData={setUserData}
             setRatingHistory={setRatingHistory}
          />
-         <ProfileCard />
+         <AnalysisResults
+            games={games}
+            userData={userData}
+            ratingHistory={ratingHistory}
+         />
       </div>
    );
 };
