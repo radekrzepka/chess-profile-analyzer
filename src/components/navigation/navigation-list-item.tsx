@@ -7,12 +7,14 @@ import classNames from "classnames";
 
 interface NavigationListItemProps {
    path: string;
+   newTab?: boolean;
    children: ReactNode;
 }
 
 const NavigationListItem: FC<NavigationListItemProps> = ({
    path,
    children,
+   newTab = false,
 }) => {
    const pathname = usePathname();
    const isSelected = pathname === path;
@@ -22,9 +24,11 @@ const NavigationListItem: FC<NavigationListItemProps> = ({
          <Link
             className={classNames(
                isSelected && "bg-primary text-background hover:text-gray-600",
-               "rounded-xl px-6 py-2",
+               "block rounded-xl px-6 py-2",
             )}
             href={path}
+            prefetch={!newTab}
+            target={newTab ? "_blank" : "_self"}
          >
             {children}
          </Link>

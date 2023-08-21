@@ -8,14 +8,14 @@ interface NavigationProps {}
 
 const Navigation: FC<NavigationProps> = ({}) => {
    return (
-      <nav className="">
-         <ul className="flex items-center justify-between">
-            <li className="hidden md:block">
+      <nav>
+         <ul className="flex flex-col items-center justify-between md:flex-row">
+            <li className="mb-4 md:mb-0">
                <Link href="/">
                   <Image src={ChessPawnIcon} alt="Chess pawn icon" width={64} />
                </Link>
             </li>
-            <div className="flex w-full items-center justify-around gap-4 text-center md:w-auto md:justify-center md:gap-6">
+            <div className="flex w-full flex-col items-center justify-around gap-4 text-center md:w-auto md:flex-row md:justify-center md:gap-6">
                <NavigationListItem path="/analysis">
                   Analysis
                </NavigationListItem>
@@ -24,6 +24,15 @@ const Navigation: FC<NavigationProps> = ({}) => {
                </NavigationListItem>
                <NavigationListItem path="/previous-analysis">
                   Previous analysis
+               </NavigationListItem>
+               <NavigationListItem
+                  path="https://github.com/radekrzepka/chess-profile-analyzer"
+                  newTab={true}
+               >
+                  GitHub
+               </NavigationListItem>
+               <NavigationListItem path="https://lichess.org/" newTab={true}>
+                  Lichess
                </NavigationListItem>
             </div>
          </ul>

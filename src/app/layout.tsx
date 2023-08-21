@@ -2,6 +2,8 @@ import "@/styles/globals.css";
 import type { Metadata } from "next";
 import { Space_Grotesk } from "next/font/google";
 import Navigation from "@/modules/navigation";
+import Providers from "@/utils/providers";
+import { Toaster } from "react-hot-toast";
 
 const spaceGrotesk = Space_Grotesk({ subsets: ["latin"], weight: "400" });
 
@@ -20,8 +22,11 @@ export default function RootLayout({
          <body
             className={`${spaceGrotesk.className} bg-background p-5 text-text`}
          >
-            <Navigation />
-            <main className="mt-5">{children}</main>
+            <Providers>
+               <Navigation />
+               <main className="mt-5">{children}</main>
+               <Toaster position="bottom-right" />
+            </Providers>
          </body>
       </html>
    );
