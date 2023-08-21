@@ -10,12 +10,7 @@ interface BoardProps {
 
 const Board: FC<BoardProps> = ({ className }) => {
    return (
-      <div
-         className={classNames(
-            "w-full place-self-center self-center lg:w-full",
-            className,
-         )}
-      >
+      <div className={classNames("w-full lg:w-full", className)}>
          <Chessboard id="BasicBoard" arePiecesDraggable={false} />
       </div>
    );

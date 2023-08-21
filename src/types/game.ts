@@ -1,13 +1,13 @@
-import { Variants } from "@/enums/variant";
+import { Variant } from "@/enums/variant";
 import { Player } from "./player";
 import { Color } from "@/enums/color";
 
 export type Game = {
    id: string;
    rated: boolean;
-   variant: Variants;
-   speed: Variants;
-   perf: Variants;
+   variant: Variant;
+   speed: Variant;
+   perf: Variant;
    createdAt: number;
    lastMoveAt: number;
    status: string;

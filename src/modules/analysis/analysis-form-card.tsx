@@ -42,10 +42,8 @@ const AnalysisFormCard: FC<AnalysisFormCardProps> = ({
          </div>
          <div
             className={classNames(
-               "overflow-hidden transition-all delay-150 duration-500 ease-in-out",
-               opened
-                  ? "max-h-[200px] p-3 opacity-100"
-                  : "max-h-0 p-0 opacity-0",
+               "overflow-hidden transition-all duration-300 ease-in-out",
+               opened ? "h-auto p-3 opacity-100" : "h-0 opacity-60",
                lastChild && "rounded-b-xl",
                "bg-accent",
             )}
