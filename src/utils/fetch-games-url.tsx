@@ -1,5 +1,4 @@
 import { AnalysisForm } from "@/modules/analysis/form/analysis-form-schema";
-import { format, parseISO } from "date-fns";
 
 const LICHESS_API_MIN_TIMESTAMP = 1356998400070;
 
@@ -8,9 +7,18 @@ const filterOption = (options: Object, paramName: string) => {
       (key) => options[key as keyof typeof options],
    );
    if (paramName === "rated" && selectedOptions.length === 1) {
-      return `&${paramName}=${selectedOptions[0]}`;
+      return `&${paramName}=${
+         selectedOptions[0] === "rated" ? "true" : "false"
+      }`;
    }
-   if (paramName !== "rated" && selectedOptions.length !== 0)
+   if (paramName === "color" && selectedOptions.length === 1)
+      return `&${paramName}=${selectedOptions[0]}`;
+
+   if (
+      paramName !== "rated" &&
+      paramName !== "color" &&
+      selectedOptions.length !== 0
+   )
       return `&${paramName}=${selectedOptions}`;
    return "";
 };
@@ -36,19 +44,20 @@ const fetchGamesUrl = ({
 }: AnalysisForm) => {
    let url = `https://lichess.org/api/games/user/${username}?opening=true`;
 
-   const additionalFilters = `${filterOption(colors, "color")}${filterOption(
+   url += opponentUsername ? `&vs=${opponentUsername}` : "";
+
+   const additionalFilters = `${filterOption(
       variants,
       "perfType",
-   )}${filterOption(gameTypes, "rated")}`;
+   )}${filterOption(gameTypes, "rated")}${filterOption(colors, "color")}`;
    url += additionalFilters;
 
-   if (startAnalysisDate)
-      url += `&since${getTimeStamp(convertDate(startAnalysisDate))}`;
-   if (endAnalysisDate)
-      url += `&since${getTimeStamp(convertDate(endAnalysisDate))}`;
+   if (startAnalysisDate) {
+      url += `&since=${getTimeStamp(convertDate(startAnalysisDate))}`;
+   }
 
-   url += opponentUsername ? `&vs=${opponentUsername}` : "";
-   console.log(url);
+   if (endAnalysisDate)
+      url += `&until=${getTimeStamp(convertDate(endAnalysisDate)) + 86399999}`;
 
    return url;
 };

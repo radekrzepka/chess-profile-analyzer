@@ -1,6 +1,8 @@
 "use client";
 
-import { FC, useEffect, useMemo } from "react";
+import { useQueryClient } from "@tanstack/react-query";
+import { Perfs, Perf } from "@/types/user";
+import { FC, useMemo, useRef } from "react";
 import { useForm } from "react-hook-form";
 import {
    analysisFormSchema,
@@ -61,6 +63,7 @@ const fetchUserData = async (username: string) => {
 const fetchGamesStream = async (
    formValues: AnalysisForm,
    setGames: Dispatch<SetStateAction<Game[]>>,
+   signal: AbortSignal,
 ) => {
    const url = fetchGamesUrl(formValues);
 
@@ -69,6 +72,7 @@ const fetchGamesStream = async (
          "Content-Type": "application/x-ndjson",
          Accept: "application/x-ndjson",
       },
+      signal: signal,
    });
 
    if (!response.ok) {
@@ -129,13 +133,14 @@ const AnalysisForm: FC<AnalysisFormProps> = ({
       resolver: zodResolver(analysisFormSchema),
       defaultValues: defaultFormValues,
    });
-   const username = getValues("username");
 
+   const username = getValues("username");
+   const queryClient = useQueryClient();
+   const abortController = useRef(new AbortController());
    const [fetchData, setFetchData] = useState(false);
-   const [openForms, setOpenForms] = useState(true);
 
    const userDataQuery = useQuery({
-      queryKey: ["userData"],
+      queryKey: ["userData", username],
       queryFn: () => fetchUserData(username),
       refetchOnWindowFocus: false,
       enabled: fetchData,
@@ -152,67 +157,54 @@ const AnalysisForm: FC<AnalysisFormProps> = ({
 
    const gamesQuery = useQuery({
       queryKey: ["games", username],
-      queryFn: () => fetchGamesStream(watch(), setGames),
+      queryFn: () =>
+         fetchGamesStream(watch(), setGames, abortController.current.signal),
       refetchOnWindowFocus: false,
       enabled: fetchData,
       retry: 0,
    });
 
-   useEffect(() => {
-      if (userDataQuery.isSuccess) {
-         setUserData(userDataQuery.data);
-      }
-      if (ratingHistoryQuery.isSuccess) {
-         setRatingHistory(ratingHistoryQuery.data);
-      }
-      if (gamesQuery.isError && gamesQuery.error instanceof Error) {
-         toast.error(gamesQuery.error.message);
-      }
-   }, [
-      userDataQuery,
-      ratingHistoryQuery,
-      gamesQuery,
-      setUserData,
-      setRatingHistory,
-      username,
-   ]);
+   setUserData(userDataQuery.data);
+   setRatingHistory(ratingHistoryQuery.data);
+
+   if (gamesQuery.isError && gamesQuery.error instanceof Error) {
+      toast.error(gamesQuery.error.message);
+   }
 
    const onSubmit = () => {
+      abortController.current = new AbortController();
       setFetchData(true);
+
+      queryClient.invalidateQueries(["userData", username]);
+      queryClient.invalidateQueries(["ratingHistory", username]);
+      queryClient.invalidateQueries(["games", username]);
    };
 
-   useEffect(() => {
-      const isFormError = () => Object.keys(errors).length !== 0;
-      setFetchData(!isFormError);
-   }, [errors]);
-
-   const disableButton = useMemo(() => games.length !== 0, [games.length]);
+   const disableForm = useMemo(() => games.length !== 0, [games.length]);
 
    return (
       <form
          className="row-start-2 mb-4 justify-center lg:row-start-2"
          onSubmit={handleSubmit(onSubmit)}
       >
-         <AnalysisFormCard
-            label="1. Enter your username"
-            firstChild={true}
-            openedForm={openForms}
-         >
+         <AnalysisFormCard label="1. Enter your username" firstChild={true}>
             <LabelInput
                register={register}
                inputType="text"
                name="username"
                errors={errors}
                label="Username:"
+               disabled={disableForm}
             />
          </AnalysisFormCard>
-         <AnalysisFormCard label="2. Select date" openedForm={openForms}>
+         <AnalysisFormCard label="2. Select date">
             <LabelInput
                register={register}
                inputType="date"
                name="startAnalysisDate"
                errors={errors}
                label="Start of analysis: "
+               disabled={disableForm}
             />
             <LabelInput
                register={register}
@@ -220,6 +212,7 @@ const AnalysisForm: FC<AnalysisFormProps> = ({
                name="endAnalysisDate"
                errors={errors}
                label="End of analysis: "
+               disabled={disableForm}
             />
             <p className="my-1">
                (If you want to get all of your games, leave this empty)
@@ -228,7 +221,6 @@ const AnalysisForm: FC<AnalysisFormProps> = ({
          <AnalysisFormCard
             label="3. Additional filters (optional)"
             lastChild={true}
-            openedForm={openForms}
          >
             <div>
                <div className="grid lg:grid-cols-3">
@@ -239,6 +231,7 @@ const AnalysisForm: FC<AnalysisFormProps> = ({
                         register={register}
                         options={option.options}
                         name={option.name as keyof AnalysisForm}
+                        disabled={disableForm}
                      />
                   ))}
                </div>
@@ -248,14 +241,15 @@ const AnalysisForm: FC<AnalysisFormProps> = ({
                   name="opponentUsername"
                   errors={errors}
                   label="Opponent's name: "
+                  disabled={disableForm}
                />
             </div>
          </AnalysisFormCard>
-         <div className="grid w-full place-items-center sm:place-content-start">
+         <div className="flex w-full justify-around">
             <button
                className="my-3 rounded-xl bg-primary px-16 py-3 text-background disabled:bg-accent"
                type="submit"
-               disabled={disableButton}
+               disabled={disableForm}
             >
                {!gamesQuery.isFetched && games.length !== 0 ? (
                   <span>
@@ -269,6 +263,18 @@ const AnalysisForm: FC<AnalysisFormProps> = ({
                ) : (
                   "Analyse"
                )}
+            </button>
+            <button
+               className="my-3 rounded-xl bg-primary px-16 py-3 text-background disabled:bg-accent"
+               onClick={(e) => {
+                  e.preventDefault();
+                  setGames([]);
+                  setFetchData(false);
+                  abortController.current.abort();
+                  queryClient.cancelQueries({ queryKey: ["games", username] });
+               }}
+            >
+               Reset
             </button>
          </div>
          <p>Fetched games: {games.length}</p>

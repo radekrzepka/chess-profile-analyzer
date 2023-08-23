@@ -1,10 +1,9 @@
 import classNames from "classnames";
-import { FC, ReactNode, useEffect, useState } from "react";
+import { FC, ReactNode, useState } from "react";
 
 interface AnalysisFormCardProps {
    children: ReactNode;
    label: string;
-   openedForm: boolean;
    className?: string;
    firstChild?: boolean;
    lastChild?: boolean;
@@ -13,16 +12,11 @@ interface AnalysisFormCardProps {
 const AnalysisFormCard: FC<AnalysisFormCardProps> = ({
    children,
    label,
-   openedForm,
    className,
    firstChild,
    lastChild,
 }) => {
-   const [opened, setOpened] = useState(false);
-
-   useEffect(() => {
-      setOpened(openedForm);
-   }, [openedForm]);
+   const [opened, setOpened] = useState(true);
 
    const onClickHandler = (event: React.MouseEvent) => {
       event.preventDefault();
