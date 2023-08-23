@@ -1,8 +1,16 @@
 "use client";
 
 import { useQueryClient } from "@tanstack/react-query";
-import { Perfs, Perf } from "@/types/user";
-import { FC, useMemo, useRef } from "react";
+import {
+   FC,
+   useMemo,
+   useRef,
+   useEffect,
+   useCallback,
+   useState,
+   Dispatch,
+   SetStateAction,
+} from "react";
 import { useForm } from "react-hook-form";
 import {
    analysisFormSchema,
@@ -13,7 +21,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import AnalysisFormCard from "./analysis-form-card";
 import { Game } from "@/types/game";
 import { useQuery } from "@tanstack/react-query";
-import { useState, Dispatch, SetStateAction } from "react";
 import { BeatLoader } from "react-spinners";
 import toast from "react-hot-toast";
 import { User } from "@/types/user";
@@ -21,7 +28,12 @@ import { RatingHistory } from "@/types/rating-history";
 import LabelInput from "@/components/ui/label-input";
 import CheckboxFilter from "@/components/ui/checkbox-filter";
 import checkboxesOptions from "../checkboxes-options";
-import fetchGamesUrl from "@/utils/fetch-games-url";
+import { usePathname, useSearchParams } from "next/navigation";
+import {
+   fetchUserData,
+   fetchGamesStream,
+   fetchRatingHistory,
+} from "./fetch-data-functions";
 
 interface AnalysisFormProps {
    setGames: Dispatch<SetStateAction<Game[]>>;
@@ -29,93 +41,6 @@ interface AnalysisFormProps {
    setRatingHistory: Dispatch<SetStateAction<RatingHistory[]>>;
    games: Game[];
 }
-
-const fetchRatingHistory = async (username: string) => {
-   const response = await fetch(
-      `https://lichess.org/api/user/${username}/rating-history`,
-   );
-
-   if (!response.ok) {
-      throw new Error(`HTTP error! Status: ${response.status}`);
-   }
-
-   if (!response.body) {
-      throw new Error("No response body found");
-   }
-
-   return response.json();
-};
-
-const fetchUserData = async (username: string) => {
-   const response = await fetch(`https://lichess.org/api/user/${username}`);
-
-   if (!response.ok) {
-      throw new Error(`HTTP error! Status: ${response.status}`);
-   }
-
-   if (!response.body) {
-      throw new Error("No response body found");
-   }
-
-   return response.json();
-};
-
-const fetchGamesStream = async (
-   formValues: AnalysisForm,
-   setGames: Dispatch<SetStateAction<Game[]>>,
-   signal: AbortSignal,
-) => {
-   const url = fetchGamesUrl(formValues);
-
-   const response = await fetch(url, {
-      headers: {
-         "Content-Type": "application/x-ndjson",
-         Accept: "application/x-ndjson",
-      },
-      signal: signal,
-   });
-
-   if (!response.ok) {
-      throw new Error(
-         `Username ${formValues.username} doesn't exist. Please change username.`,
-      );
-   }
-
-   if (!response.body) {
-      throw new Error("No response body found");
-   }
-
-   const reader = response.body.getReader();
-   let gamesFounded = false;
-
-   while (true) {
-      const { done, value } = await reader.read();
-
-      if (done) {
-         break;
-      }
-
-      gamesFounded = true;
-
-      const newGames = new TextDecoder()
-         .decode(value)
-         .split("\n")
-         .filter(Boolean)
-         .map((game) => JSON.parse(game));
-
-      newGames.forEach((game) => {
-         setGames((prevGames) => [...prevGames, game]);
-      });
-   }
-
-   if (!gamesFounded) {
-      throw new Error(
-         "No games founded for selected filters. Please changes filters.",
-      );
-   }
-
-   return response;
-};
 
 const AnalysisForm: FC<AnalysisFormProps> = ({
    setUserData,
@@ -134,42 +59,41 @@ const AnalysisForm: FC<AnalysisFormProps> = ({
       defaultValues: defaultFormValues,
    });
 
-   const username = getValues("username");
    const queryClient = useQueryClient();
    const abortController = useRef(new AbortController());
    const [fetchData, setFetchData] = useState(false);
+   const pathname = usePathname();
+   const searchParams = useSearchParams();
+
+   const username = getValues("username");
+
+   const queriesSettings = {
+      refetchOnWindowFocus: false,
+      enabled: fetchData,
+      retry: 0,
+   };
 
    const userDataQuery = useQuery({
       queryKey: ["userData", username],
       queryFn: () => fetchUserData(username),
-      refetchOnWindowFocus: false,
-      enabled: fetchData,
-      retry: 0,
+      ...queriesSettings,
    });
 
    const ratingHistoryQuery = useQuery({
       queryKey: ["ratingHistory", username],
       queryFn: () => fetchRatingHistory(username),
-      refetchOnWindowFocus: false,
-      enabled: fetchData,
-      retry: 0,
+      ...queriesSettings,
    });
 
    const gamesQuery = useQuery({
       queryKey: ["games", username],
       queryFn: () =>
          fetchGamesStream(watch(), setGames, abortController.current.signal),
-      refetchOnWindowFocus: false,
-      enabled: fetchData,
-      retry: 0,
+      ...queriesSettings,
    });
 
    setUserData(userDataQuery.data);
    setRatingHistory(ratingHistoryQuery.data);
-
-   if (gamesQuery.isError && gamesQuery.error instanceof Error) {
-      toast.error(gamesQuery.error.message);
-   }
 
    const onSubmit = () => {
       abortController.current = new AbortController();
@@ -181,6 +105,23 @@ const AnalysisForm: FC<AnalysisFormProps> = ({
    };
 
    const disableForm = useMemo(() => games.length !== 0, [games.length]);
+
+   const resetForm = useCallback(() => {
+      setGames([]);
+      setFetchData(false);
+      abortController.current.abort();
+      queryClient.cancelQueries({ queryKey: ["games", username] });
+   }, [queryClient, setGames, username]);
+
+   useEffect(() => {
+      if (gamesQuery.isError && gamesQuery.error instanceof Error) {
+         toast.error(gamesQuery.error.message);
+      }
+   }, [gamesQuery.error, gamesQuery.isError]);
+
+   useEffect(() => {
+      resetForm();
+   }, [resetForm, pathname, searchParams]);
 
    return (
       <form
@@ -268,10 +209,7 @@ const AnalysisForm: FC<AnalysisFormProps> = ({
                className="my-3 rounded-xl bg-primary px-16 py-3 text-background disabled:bg-accent"
                onClick={(e) => {
                   e.preventDefault();
-                  setGames([]);
-                  setFetchData(false);
-                  abortController.current.abort();
-                  queryClient.cancelQueries({ queryKey: ["games", username] });
+                  resetForm();
                }}
             >
                Reset
