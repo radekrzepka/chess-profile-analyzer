@@ -1,9 +1,10 @@
 import RatingCard from "@/components/analysis/results/rating-card";
 import { Perfs, Perf } from "@/types/user";
-import { FC, useMemo } from "react";
+import { FC, useMemo, Dispatch, SetStateAction } from "react";
 
 interface RatingCardsProps {
    perfs: Perfs;
+   setSelectedPerf: Dispatch<SetStateAction<keyof Perfs | undefined>>;
 }
 
 const perfKeys = [
@@ -15,13 +16,11 @@ const perfKeys = [
    "puzzle",
 ];
 
-const RatingCards: FC<RatingCardsProps> = ({ perfs }) => {
+const RatingCards: FC<RatingCardsProps> = ({ perfs, setSelectedPerf }) => {
    const filteredPerfs: Perfs = useMemo(() => {
-      const filteredEntries = Object.entries(perfs)
-         .filter(
-            ([key, value]) => perfKeys.includes(key as any) && !value?.prov,
-         )
-         .sort(([keyA], [keyB]) => keyA.localeCompare(keyB));
+      const filteredEntries = Object.entries(perfs).filter(
+         ([key, value]) => perfKeys.includes(key as any) && !value?.prov,
+      );
 
       return filteredEntries.reduce((obj, [key, value]) => {
          obj[key as keyof Perfs] = value;
@@ -35,7 +34,8 @@ const RatingCards: FC<RatingCardsProps> = ({ perfs }) => {
             <RatingCard
                key={key}
                perf={filteredPerfs[key as keyof Perfs] as Perf}
-               name={key}
+               name={key as keyof Perfs}
+               setSelectedPerf={setSelectedPerf}
             />
          ))}
       </div>

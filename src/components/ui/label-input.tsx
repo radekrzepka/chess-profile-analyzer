@@ -13,6 +13,7 @@ interface LabelInputProps<T extends FieldValues> {
    register: UseFormRegister<T>;
    name: Path<T>;
    errors: FieldErrors<T>;
+   disabled?: boolean;
 }
 
 const LabelInput = <T extends FieldValues>({
@@ -21,6 +22,7 @@ const LabelInput = <T extends FieldValues>({
    register,
    name,
    errors,
+   disabled = false,
 }: LabelInputProps<T>) => {
    return (
       <div className="mt-1">
@@ -33,6 +35,7 @@ const LabelInput = <T extends FieldValues>({
             register={register}
             name={name}
             className={!errors[name] ? "mb-1" : ""}
+            disabled={disabled}
          />
          {errors[name]?.message && (
             <ErrorMessage>{errors[name]?.message as string}</ErrorMessage>

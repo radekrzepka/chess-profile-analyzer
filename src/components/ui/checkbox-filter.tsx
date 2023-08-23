@@ -10,6 +10,7 @@ interface CheckboxFilterProps<T extends FieldValues> {
    options: Array<Option>;
    register: UseFormRegister<T>;
    name: Path<T>;
+   disabled?: boolean;
 }
 
 const CheckboxFilter = <T extends FieldValues>({
@@ -17,6 +18,7 @@ const CheckboxFilter = <T extends FieldValues>({
    options,
    register,
    name,
+   disabled,
 }: CheckboxFilterProps<T>) => {
    return (
       <fieldset>
@@ -30,6 +32,7 @@ const CheckboxFilter = <T extends FieldValues>({
                      name={`${name}.${option.value}`}
                      id={`${name}.${option.value}`}
                      className="mr-2 scale-125 accent-primary"
+                     disabled={disabled}
                   />
                   <label
                      className="text-lg"

@@ -8,6 +8,7 @@ interface InputProps<T extends FieldValues> {
    register: UseFormRegister<T>;
    name: Path<T>;
    className?: string;
+   disabled?: boolean;
 }
 
 const Input = <T extends FieldValues>({
@@ -17,6 +18,7 @@ const Input = <T extends FieldValues>({
    register,
    name,
    className,
+   disabled = false,
 }: InputProps<T>) => {
    return (
       <input
@@ -24,6 +26,7 @@ const Input = <T extends FieldValues>({
          type={type}
          placeholder={placeholder}
          id={id}
+         disabled={disabled}
          className={classNames(
             "rounded-md px-4 py-1 text-background placeholder:text-[#d6d6d6]",
             className,
