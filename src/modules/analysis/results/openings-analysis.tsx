@@ -6,13 +6,25 @@ interface OpeningsAnalysisProps {
 }
 
 const OpeningsAnalysis: FC<OpeningsAnalysisProps> = ({ games }) => {
-   if (games.length === 0) return null;
+   // const gamesByOpening: Record<string, Game[]> = {};
+
+   // for (const game of games) {
+   //    const [openingName] = game.opening.name.split(":");
+   //    if (gamesByOpening[openingName]) gamesByOpening[openingName].push(game);
+   //    else gamesByOpening[openingName] = [game];
+   // }
+
+   // console.log(games, gamesByOpening);
 
    return (
       <div>
-         {/* {games.map((game) => (
-            <p key={game.id}>{game.opening.name}</p>
-         ))} */}
+         {/* {Object.entries(gamesByOpening)
+            .sort((a, b) => a.length - b.length)
+            .map(([openingName, games]) => (
+               <p key={openingName}>
+                  {openingName}:{games.length}
+               </p>
+            ))} */}
       </div>
    );
 };

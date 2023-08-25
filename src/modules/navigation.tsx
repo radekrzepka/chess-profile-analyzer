@@ -16,9 +16,7 @@ const Navigation: FC<NavigationProps> = ({}) => {
                </Link>
             </li>
             <div className="flex w-full flex-col items-center justify-around gap-4 text-center md:w-auto md:flex-row md:justify-center md:gap-6">
-               <NavigationListItem path="/analysis">
-                  Analysis
-               </NavigationListItem>
+               <NavigationListItem path="/">Analysis</NavigationListItem>
                <NavigationListItem path="/openings">
                   Openings
                </NavigationListItem>

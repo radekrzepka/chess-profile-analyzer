@@ -62,6 +62,7 @@ const AnalysisForm: FC<AnalysisFormProps> = ({
    const queryClient = useQueryClient();
    const abortController = useRef(new AbortController());
    const [fetchData, setFetchData] = useState(false);
+   const [isFormSubmitted, setIsFormSubmitted] = useState(false);
    const pathname = usePathname();
    const searchParams = useSearchParams();
 
@@ -96,6 +97,12 @@ const AnalysisForm: FC<AnalysisFormProps> = ({
    setRatingHistory(ratingHistoryQuery.data);
 
    const onSubmit = () => {
+      // If there's an ongoing fetch, abort it
+      if (fetchData) {
+         abortController.current.abort();
+      }
+
+      // Then initiate a new AbortController instance
       abortController.current = new AbortController();
       setFetchData(true);
 
@@ -109,6 +116,7 @@ const AnalysisForm: FC<AnalysisFormProps> = ({
    const resetForm = useCallback(() => {
       setGames([]);
       setFetchData(false);
+
       abortController.current.abort();
       queryClient.cancelQueries({ queryKey: ["games", username] });
    }, [queryClient, setGames, username]);
@@ -120,8 +128,16 @@ const AnalysisForm: FC<AnalysisFormProps> = ({
    }, [gamesQuery.error, gamesQuery.isError]);
 
    useEffect(() => {
-      resetForm();
-   }, [resetForm, pathname, searchParams]);
+      if (!fetchData) {
+         resetForm();
+      }
+   }, [resetForm, pathname, searchParams, fetchData]);
+
+   useEffect(() => {
+      return () => {
+         abortController.current.abort();
+      };
+   }, []);
 
    return (
       <form
@@ -209,6 +225,9 @@ const AnalysisForm: FC<AnalysisFormProps> = ({
                className="my-3 rounded-xl bg-primary px-16 py-3 text-background disabled:bg-accent"
                onClick={(e) => {
                   e.preventDefault();
+                  if (fetchData) {
+                     abortController.current.abort();
+                  }
                   resetForm();
                }}
             >

@@ -37,7 +37,7 @@ export const analysisFormSchema = z
    );
 
 export const defaultFormValues = {
-   username: "Narixoo",
+   username: "",
    startAnalysisDate: null,
    endAnalysisDate: null,
    colors: {
