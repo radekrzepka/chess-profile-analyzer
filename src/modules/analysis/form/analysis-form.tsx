@@ -39,6 +39,7 @@ interface AnalysisFormProps {
    setGames: Dispatch<SetStateAction<Game[]>>;
    setUserData: Dispatch<SetStateAction<User | undefined>>;
    setRatingHistory: Dispatch<SetStateAction<RatingHistory[]>>;
+   setUsername: Dispatch<SetStateAction<string>>;
    games: Game[];
 }
 
@@ -46,6 +47,7 @@ const AnalysisForm: FC<AnalysisFormProps> = ({
    setUserData,
    setGames,
    setRatingHistory,
+   setUsername,
    games,
 }) => {
    const {
@@ -66,7 +68,7 @@ const AnalysisForm: FC<AnalysisFormProps> = ({
    const pathname = usePathname();
    const searchParams = useSearchParams();
 
-   const username = getValues("username");
+   const username = watch("username");
 
    const queriesSettings = {
       refetchOnWindowFocus: false,
@@ -97,14 +99,13 @@ const AnalysisForm: FC<AnalysisFormProps> = ({
    setRatingHistory(ratingHistoryQuery.data);
 
    const onSubmit = () => {
-      // If there's an ongoing fetch, abort it
       if (fetchData) {
          abortController.current.abort();
       }
 
-      // Then initiate a new AbortController instance
       abortController.current = new AbortController();
       setFetchData(true);
+      setUsername(username);
 
       queryClient.invalidateQueries(["userData", username]);
       queryClient.invalidateQueries(["ratingHistory", username]);

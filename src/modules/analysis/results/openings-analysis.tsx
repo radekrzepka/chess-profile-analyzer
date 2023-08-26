@@ -1,31 +1,48 @@
 import { Game } from "@/types/game";
 import { FC } from "react";
+import OpeningCard from "./opening-card";
 
 interface OpeningsAnalysisProps {
    games: Game[];
+   username: string;
 }
 
-const OpeningsAnalysis: FC<OpeningsAnalysisProps> = ({ games }) => {
-   // const gamesByOpening: Record<string, Game[]> = {};
+const OpeningsAnalysis: FC<OpeningsAnalysisProps> = ({ games, username }) => {
+   const gamesByOpening: Record<string, Game[]> = {};
 
-   // for (const game of games) {
-   //    const [openingName] = game.opening.name.split(":");
-   //    if (gamesByOpening[openingName]) gamesByOpening[openingName].push(game);
-   //    else gamesByOpening[openingName] = [game];
-   // }
+   for (const game of games) {
+      const userColor =
+         game.players.black.user.id === username ? "black" : "white";
+      if (game.status !== "draw") {
+         game.status = game.winner === userColor ? "userWin" : "userLose";
+      }
 
-   // console.log(games, gamesByOpening);
+      if (!game.opening) continue;
+
+      const [openingName] = game.opening?.name.split(":");
+      if (gamesByOpening[openingName]) gamesByOpening[openingName].push(game);
+      else gamesByOpening[openingName] = [game];
+   }
+
+   const sorted = Object.entries(gamesByOpening).sort(
+      (a, b) => b[1].length - a[1].length,
+   );
 
    return (
-      <div>
-         {/* {Object.entries(gamesByOpening)
-            .sort((a, b) => a.length - b.length)
-            .map(([openingName, games]) => (
-               <p key={openingName}>
-                  {openingName}:{games.length}
-               </p>
-            ))} */}
-      </div>
+      <>
+         <h3 className="my-4 text-center text-3xl font-bold">
+            Openings analysis
+         </h3>
+         <div>
+            {sorted.map(([openingName, games]) => (
+               <OpeningCard
+                  key={openingName}
+                  name={openingName}
+                  games={games}
+               />
+            ))}
+         </div>
+      </>
    );
 };
 

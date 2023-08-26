@@ -16,7 +16,7 @@ export interface Game {
       white: Player;
       black: Player;
    };
-   opening: {
+   opening?: {
       eco: string;
       name: string;
       ply: number;

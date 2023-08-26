@@ -25,7 +25,10 @@ const ProfileCard: FC<ProfileCardProps> = ({ userData, ratingHistory }) => {
 
    return (
       <div>
-         <h2 className="text-center text-4xl ">{username}</h2>
+         <h2 className="mb-2 text-center text-5xl font-bold">{username}</h2>
+         <h3 className="mb-2 text-center text-3xl font-bold">User stats</h3>
+         <p>Dodać statsy</p>
+         <h3 className="mb-2 text-center text-3xl font-bold">Rating history</h3>
          <RatingCards perfs={perfs} setSelectedPerf={setSelectedPerf} />
          <RatingChart
             ratingHistory={ratingHistory}

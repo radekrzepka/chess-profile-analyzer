@@ -12,6 +12,7 @@ const Page = () => {
    const [games, setGames] = useState<Game[]>([]);
    const [userData, setUserData] = useState<User | undefined>();
    const [ratingHistory, setRatingHistory] = useState<RatingHistory[]>([]);
+   const [username, setUsername] = useState("");
 
    return (
       <div className="grid lg:grid-cols-[1fr_2fr] lg:gap-6">
@@ -24,11 +25,13 @@ const Page = () => {
             games={games}
             setUserData={setUserData}
             setRatingHistory={setRatingHistory}
+            setUsername={setUsername}
          />
          <AnalysisResults
             games={games}
             userData={userData}
             ratingHistory={ratingHistory}
+            username={username}
          />
       </div>
    );
