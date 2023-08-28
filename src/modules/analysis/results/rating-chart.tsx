@@ -41,7 +41,9 @@ const RatingChart: FC<RatingChartProps> = ({ ratingHistory, selectedPerf }) => {
    if (!selectedPerf) {
       return (
          <div className="grid h-[500px] w-full place-items-center">
-            <p className="text-3xl">Please select one of tempo to show chart</p>
+            <p className="text-center text-3xl">
+               Please select one of tempo to show chart
+            </p>
          </div>
       );
    }
@@ -49,7 +51,9 @@ const RatingChart: FC<RatingChartProps> = ({ ratingHistory, selectedPerf }) => {
    if (selectedPerf === "puzzle") {
       return (
          <div className="grid h-[500px] w-full place-items-center">
-            <p className="text-3xl">Chart not available for puzzles</p>
+            <p className="text-center text-3xl">
+               Chart not available for puzzles
+            </p>
          </div>
       );
    }

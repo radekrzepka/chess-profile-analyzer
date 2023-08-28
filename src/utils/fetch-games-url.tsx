@@ -42,7 +42,7 @@ const fetchGamesUrl = ({
    gameTypes,
    opponentUsername,
 }: AnalysisForm) => {
-   let url = `https://lichess.org/api/games/user/${username}?opening=true`;
+   let url = `https://lichess.org/api/games/user/${username}?opening=true&pgnInJson=true`;
 
    url += opponentUsername ? `&vs=${opponentUsername}` : "";
 

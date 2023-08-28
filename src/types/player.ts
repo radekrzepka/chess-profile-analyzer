@@ -1,4 +1,4 @@
-interface PlayerData {
+export interface PlayerData {
    name: string;
    title?: string;
    patron?: boolean;
@@ -6,7 +6,7 @@ interface PlayerData {
 }
 
 export interface Player {
-   user: PlayerData;
-   rating: number;
+   user: PlayerData | "Anonymous";
+   rating?: number;
    ratingDiff?: number;
 }

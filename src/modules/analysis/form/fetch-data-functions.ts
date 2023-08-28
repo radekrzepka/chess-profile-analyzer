@@ -2,6 +2,7 @@ import { AnalysisForm } from "./analysis-form-schema";
 import { Dispatch, SetStateAction } from "react";
 import { Game } from "@/types/game";
 import fetchGamesUrl from "@/utils/fetch-games-url";
+import { toast } from "react-hot-toast";
 
 export const fetchRatingHistory = async (username: string) => {
    const response = await fetch(
@@ -38,6 +39,7 @@ export const fetchGamesStream = async (
    setGames: Dispatch<SetStateAction<Game[]>>,
    signal: AbortSignal,
 ) => {
+   console.time("fetchGamesStream Execution Time"); // Start the timer
    const url = fetchGamesUrl(formValues);
 
    const response = await fetch(url, {
@@ -74,11 +76,23 @@ export const fetchGamesStream = async (
          .decode(value)
          .split("\n")
          .filter(Boolean)
-         .map((game) => JSON.parse(game));
+         .map((gameString) => {
+            try {
+               return JSON.parse(gameString);
+            } catch (error) {
+               return null;
+            }
+         })
+         .filter((game) => game !== null);
 
-      newGames.forEach((game) => {
+      for (const game of newGames) {
+         if (
+            Object.keys(game.players.white).length === 1 ||
+            Object.keys(game.players.black).length === 1
+         )
+            continue;
          setGames((prevGames) => [...prevGames, game]);
-      });
+      }
    }
 
    if (!gamesFounded) {
@@ -87,5 +101,6 @@ export const fetchGamesStream = async (
       );
    }
 
+   toast.success("All games downloaded");
    return response;
 };

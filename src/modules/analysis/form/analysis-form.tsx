@@ -64,7 +64,6 @@ const AnalysisForm: FC<AnalysisFormProps> = ({
    const queryClient = useQueryClient();
    const abortController = useRef(new AbortController());
    const [fetchData, setFetchData] = useState(false);
-   const [isFormSubmitted, setIsFormSubmitted] = useState(false);
    const pathname = usePathname();
    const searchParams = useSearchParams();
 
@@ -103,6 +102,7 @@ const AnalysisForm: FC<AnalysisFormProps> = ({
          abortController.current.abort();
       }
 
+      setGames([]);
       abortController.current = new AbortController();
       setFetchData(true);
       setUsername(username);
@@ -112,15 +112,12 @@ const AnalysisForm: FC<AnalysisFormProps> = ({
       queryClient.invalidateQueries(["games", username]);
    };
 
-   const disableForm = useMemo(() => games.length !== 0, [games.length]);
-
    const resetForm = useCallback(() => {
-      setGames([]);
       setFetchData(false);
 
       abortController.current.abort();
       queryClient.cancelQueries({ queryKey: ["games", username] });
-   }, [queryClient, setGames, username]);
+   }, [queryClient, username]);
 
    useEffect(() => {
       if (gamesQuery.isError && gamesQuery.error instanceof Error) {
@@ -141,10 +138,7 @@ const AnalysisForm: FC<AnalysisFormProps> = ({
    }, []);
 
    return (
-      <form
-         className="row-start-2 mb-4 justify-center lg:row-start-2"
-         onSubmit={handleSubmit(onSubmit)}
-      >
+      <form className="mb-4 justify-center" onSubmit={handleSubmit(onSubmit)}>
          <AnalysisFormCard label="1. Enter your username" firstChild={true}>
             <LabelInput
                register={register}
@@ -152,7 +146,7 @@ const AnalysisForm: FC<AnalysisFormProps> = ({
                name="username"
                errors={errors}
                label="Username:"
-               disabled={disableForm}
+               disabled={fetchData}
             />
          </AnalysisFormCard>
          <AnalysisFormCard label="2. Select date">
@@ -162,7 +156,7 @@ const AnalysisForm: FC<AnalysisFormProps> = ({
                name="startAnalysisDate"
                errors={errors}
                label="Start of analysis: "
-               disabled={disableForm}
+               disabled={fetchData}
             />
             <LabelInput
                register={register}
@@ -170,7 +164,7 @@ const AnalysisForm: FC<AnalysisFormProps> = ({
                name="endAnalysisDate"
                errors={errors}
                label="End of analysis: "
-               disabled={disableForm}
+               disabled={fetchData}
             />
             <p className="my-1">
                (If you want to get all of your games, leave this empty)
@@ -189,7 +183,7 @@ const AnalysisForm: FC<AnalysisFormProps> = ({
                         register={register}
                         options={option.options}
                         name={option.name as keyof AnalysisForm}
-                        disabled={disableForm}
+                        disabled={fetchData}
                      />
                   ))}
                </div>
@@ -199,17 +193,17 @@ const AnalysisForm: FC<AnalysisFormProps> = ({
                   name="opponentUsername"
                   errors={errors}
                   label="Opponent's name: "
-                  disabled={disableForm}
+                  disabled={fetchData}
                />
             </div>
          </AnalysisFormCard>
-         <div className="flex w-full justify-around">
+         <div className="flex w-full flex-wrap justify-around">
             <button
                className="my-3 rounded-xl bg-primary px-16 py-3 text-background disabled:bg-accent"
                type="submit"
-               disabled={disableForm}
+               disabled={fetchData}
             >
-               {!gamesQuery.isFetched && games.length !== 0 ? (
+               {!gamesQuery.isFetched && games.length !== 0 && fetchData ? (
                   <span>
                      <BeatLoader
                         color="#110f1f"
@@ -230,6 +224,19 @@ const AnalysisForm: FC<AnalysisFormProps> = ({
                      abortController.current.abort();
                   }
                   resetForm();
+               }}
+            >
+               Stop
+            </button>
+            <button
+               className="my-3 rounded-xl bg-primary px-16 py-3 text-background disabled:bg-accent"
+               onClick={(e) => {
+                  e.preventDefault();
+                  if (fetchData) {
+                     abortController.current.abort();
+                  }
+                  resetForm();
+                  setGames([]);
                }}
             >
                Reset
