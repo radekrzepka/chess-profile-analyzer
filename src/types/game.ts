@@ -27,4 +27,5 @@ export interface Game {
       increment: number;
       totalTime: number;
    };
+   userColor?: string;
 }

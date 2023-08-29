@@ -1,5 +1,5 @@
 import { Game } from "@/types/game";
-import { FC, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import { Player } from "@/types/player";
 import { format } from "date-fns";
 import ChessAnalysisBoard from "react-chess-analysis-board";
@@ -18,6 +18,7 @@ const showPlayerData = (player: Player) =>
 const GameCard: FC<GameCardProps> = ({ game }) => {
    const [showBoard, setShowBoard] = useState(false);
    const width = useWindowWidth();
+   console.log(game);
 
    return (
       <div>
@@ -35,7 +36,11 @@ const GameCard: FC<GameCardProps> = ({ game }) => {
                   config={{
                      boardConfig: {
                         ChessBoardProps: {
-                           boardWidth: width < 1024 ? 300 : 600,
+                           boardOrientation: game.userColor as
+                              | "white"
+                              | "black",
+                           boardWidth:
+                              width < 1024 ? (width / 3) * 2 : width / 3,
                         },
                      },
                   }}

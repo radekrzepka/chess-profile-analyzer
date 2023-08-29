@@ -27,6 +27,8 @@ const OpeningsAnalysis: FC<OpeningsAnalysisProps> = ({ games, username }) => {
                : "white";
       }
 
+      game.userColor = userColor;
+
       if (game.status !== "draw") {
          game.status = game.winner === userColor ? "userWin" : "userLose";
       }
