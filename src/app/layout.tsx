@@ -8,7 +8,7 @@ import { Toaster } from "react-hot-toast";
 const spaceGrotesk = Space_Grotesk({ subsets: ["latin"], weight: "400" });
 
 export const metadata: Metadata = {
-   title: "Lichess profile analyzer",
+   title: "Lichess Profile Analyzer",
    description: `Welcome to our chess analysis web app, where we bring the power of data-driven insights to your lichess.org profile! Our app provides a comprehensive suite of tools to help you improve your chess game and gain a deeper understanding of your playing style.`,
 };
 

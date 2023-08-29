@@ -196,10 +196,13 @@ const AnalysisForm: FC<AnalysisFormProps> = ({
                   disabled={fetchData}
                />
             </div>
+            <p className="text-lg font-bold">
+               Downloaded games: {games.length}
+            </p>
          </AnalysisFormCard>
          <div className="flex w-full flex-wrap justify-around">
             <button
-               className="my-3 rounded-xl bg-primary px-16 py-3 text-background disabled:bg-accent"
+               className="my-3 w-full rounded-xl bg-primary px-16 py-3 text-background disabled:bg-accent md:w-auto"
                type="submit"
                disabled={fetchData}
             >
@@ -217,7 +220,7 @@ const AnalysisForm: FC<AnalysisFormProps> = ({
                )}
             </button>
             <button
-               className="my-3 rounded-xl bg-primary px-16 py-3 text-background disabled:bg-accent"
+               className="my-3 w-full rounded-xl bg-primary px-16 py-3 text-background disabled:bg-accent md:w-auto"
                onClick={(e) => {
                   e.preventDefault();
                   if (fetchData) {
@@ -229,7 +232,7 @@ const AnalysisForm: FC<AnalysisFormProps> = ({
                Stop
             </button>
             <button
-               className="my-3 rounded-xl bg-primary px-16 py-3 text-background disabled:bg-accent"
+               className="my-3 w-full rounded-xl bg-primary px-16 py-3 text-background disabled:bg-accent md:w-auto"
                onClick={(e) => {
                   e.preventDefault();
                   if (fetchData) {
@@ -242,7 +245,6 @@ const AnalysisForm: FC<AnalysisFormProps> = ({
                Reset
             </button>
          </div>
-         <p>Fetched games: {games.length}</p>
       </form>
    );
 };

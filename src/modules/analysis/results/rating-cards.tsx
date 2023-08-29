@@ -30,14 +30,16 @@ const RatingCards: FC<RatingCardsProps> = ({ perfs, setSelectedPerf }) => {
 
    return (
       <div className="flex w-full flex-wrap justify-around gap-2">
-         {Object.keys(filteredPerfs).map((key) => (
-            <RatingCard
-               key={key}
-               perf={filteredPerfs[key as keyof Perfs] as Perf}
-               name={key as keyof Perfs}
-               setSelectedPerf={setSelectedPerf}
-            />
-         ))}
+         {Object.keys(filteredPerfs)
+            .sort((a, b) => perfKeys.indexOf(a) - perfKeys.indexOf(b))
+            .map((key) => (
+               <RatingCard
+                  key={key}
+                  perf={filteredPerfs[key as keyof Perfs] as Perf}
+                  name={key as keyof Perfs}
+                  setSelectedPerf={setSelectedPerf}
+               />
+            ))}
       </div>
    );
 };

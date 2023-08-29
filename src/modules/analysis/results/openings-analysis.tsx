@@ -12,8 +12,6 @@ const OpeningsAnalysis: FC<OpeningsAnalysisProps> = ({ games, username }) => {
    const gamesByOpening: Record<string, Game[]> = {};
 
    for (const game of games) {
-      // console.log(game);
-
       let userColor;
 
       if (Object.keys(game.players.black).length === 0) {
@@ -47,7 +45,7 @@ const OpeningsAnalysis: FC<OpeningsAnalysisProps> = ({ games, username }) => {
    return (
       <>
          {games.length !== 0 && (
-            <h3 className="my-4 text-center text-3xl font-bold">
+            <h3 className="my-6 text-center text-4xl font-bold">
                Openings analysis
             </h3>
          )}

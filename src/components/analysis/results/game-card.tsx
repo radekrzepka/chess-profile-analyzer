@@ -43,7 +43,7 @@ const GameCard: FC<GameCardProps> = ({ game }) => {
                <div>
                   <p>
                      <span className="font-bold">Game Date: </span>
-                     {format(new Date(game.createdAt), "dd/MM/yyyy HH:mm:ss")}
+                     {format(new Date(game.createdAt), "dd MMMM yyyy HH:mm:ss")}
                   </p>
                </div>
             </div>
