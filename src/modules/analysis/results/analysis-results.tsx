@@ -9,17 +9,19 @@ interface AnalysisResultsProps {
    games: Game[];
    userData: User | undefined;
    ratingHistory: RatingHistory[];
+   username: string;
 }
 
 const AnalysisResults: FC<AnalysisResultsProps> = ({
    games,
    userData,
    ratingHistory,
+   username,
 }) => {
    return (
       <div className="my-3 min-h-[300px] w-full rounded-xl bg-primary p-3 text-background lg:col-span-2">
          <ProfileCard userData={userData} ratingHistory={ratingHistory} />
-         <OpeningsAnalysis games={games} />
+         <OpeningsAnalysis games={games} username={username} />
       </div>
    );
 };

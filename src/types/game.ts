@@ -16,7 +16,7 @@ export interface Game {
       white: Player;
       black: Player;
    };
-   opening: {
+   opening?: {
       eco: string;
       name: string;
       ply: number;
@@ -27,4 +27,5 @@ export interface Game {
       increment: number;
       totalTime: number;
    };
+   userColor?: string;
 }

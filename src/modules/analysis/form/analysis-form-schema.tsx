@@ -2,7 +2,7 @@ import { z } from "zod";
 
 export const analysisFormSchema = z
    .object({
-      username: z.string().min(1),
+      username: z.string().min(1, "Provide your username"),
       startAnalysisDate: z.coerce.date().max(new Date()).nullable(),
       endAnalysisDate: z.coerce.date().max(new Date()).nullable(),
       colors: z.object({
