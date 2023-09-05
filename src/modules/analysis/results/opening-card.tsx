@@ -11,6 +11,22 @@ interface OpeningCardProps {
 const OpeningCard: FC<OpeningCardProps> = ({ name, games }) => {
    const [opened, setOpened] = useState(false);
 
+   const openingProgress = useMemo(() => {
+      let progress = 0;
+      for (const game of games) {
+         const { userColor } = game;
+         if (!userColor) continue;
+         console.log(game.players[userColor as "white" | "black"]);
+
+         progress +=
+            game.players[userColor as "white" | "black"].ratingDiff ?? 0;
+      }
+
+      return progress;
+   }, [games]);
+
+   console.log(name, openingProgress);
+
    const wonGamesNumber = useMemo(
       () =>
          games.reduce((accumulator, currentGame) => {
@@ -52,7 +68,18 @@ const OpeningCard: FC<OpeningCardProps> = ({ name, games }) => {
             )}
             onClick={onClickHandler}
          >
-            <p className="text-xl">{name}</p>
+            <p className="text-xl">
+               {name}{" "}
+               <span
+                  className={classNames(
+                     openingProgress >= 0 ? "text-green-800" : "text-red-800",
+                     "font-bold",
+                  )}
+               >
+                  {openingProgress > 0 && "+"}
+                  {openingProgress}
+               </span>
+            </p>
             <p>
                <span className="mr-2">
                   {wonGamesNumber}/{drawnGamesNumber}/

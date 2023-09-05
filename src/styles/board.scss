@@ -1,6 +1,5 @@
 .panel-container {
    width: 300px;
-   display: flex;
    border-style: solid;
    align-items: center;
    justify-content: space-evenly;
@@ -44,16 +43,23 @@
 
 .RCAB-analysis-board-container {
    outline: none;
-   display: flex;
-   flex-direction: row;
-   gap: 2rem;
+   display: grid;
+   grid-template-columns: auto 1fr;
+   width: 100%;
+   gap: 1rem;
 }
 
-@media (max-width: 1024px) {
+@media (max-width: 768px) {
    .RCAB-analysis-board-container {
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
+      grid-template-columns: 1fr;
+      place-items: center;
+   }
+}
+
+@media (min-width: 1024px) and (max-width: 1400px) {
+   .RCAB-analysis-board-container {
+      grid-template-columns: 1fr;
+      place-items: center;
    }
 }
 
@@ -64,7 +70,9 @@
   */
 
 .RCAB-moves-container {
-   width: 100%;
+   display: grid;
+   gap: 0 0.5rem;
+   grid-template-columns: repeat(2, 1fr);
 }
 
 /* Root */
