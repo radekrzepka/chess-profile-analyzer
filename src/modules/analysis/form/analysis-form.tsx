@@ -53,7 +53,7 @@ const AnalysisForm: FC<AnalysisFormProps> = ({
    const {
       register,
       handleSubmit,
-      getValues,
+      reset,
       watch,
       formState: { errors },
    } = useForm<AnalysisForm>({
@@ -240,6 +240,7 @@ const AnalysisForm: FC<AnalysisFormProps> = ({
                   }
                   resetForm();
                   setGames([]);
+                  reset();
                }}
             >
                Reset
