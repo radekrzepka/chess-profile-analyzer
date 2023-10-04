@@ -1,5 +1,3 @@
-# 🚧Work in progress🚧
-
 # Chess profile analyzer
 
 App for analyzing your and yours opponents best openings on lichess.org
@@ -12,10 +10,7 @@ App for analyzing your and yours opponents best openings on lichess.org
 -  Zod
 -  React Query
 -  React Hook Form
--  Jest
--  React Testing Library
--  Playwright
-
+  
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 ## Getting Started
