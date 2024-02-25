@@ -139,7 +139,7 @@ const AnalysisForm: FC<AnalysisFormProps> = ({
 
    return (
       <form className="mb-4 justify-center" onSubmit={handleSubmit(onSubmit)}>
-         <AnalysisFormCard label="1. Enter your username" firstChild={true}>
+         <AnalysisFormCard label="1. Enter your lichess username" firstChild={true}>
             <LabelInput
                register={register}
                inputType="text"
