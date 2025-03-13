@@ -1,47 +1,96 @@
-# Chess profile analyzer
+# Chess Profile Analyzer
 
-App for analyzing your and yours opponents best openings on lichess.org
+A Next.js application for analyzing chess openings performance for Lichess.org players
 
-## Technologies
+## Table of Contents
 
--  Next.js
--  Typescript
--  Tailwind CSS
--  Zod
--  React Query
--  React Hook Form
-  
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+- [Chess Profile Analyzer](#chess-profile-analyzer)
+  - [Table of Contents](#table-of-contents)
+  - [Overview](#overview)
+  - [Key Features](#key-features)
+  - [Technologies Used](#technologies-used)
+    - [Frontend Technologies](#frontend-technologies)
+  - [Getting Started](#getting-started)
+    - [Prerequisites](#prerequisites)
+    - [Installation and Setup](#installation-and-setup)
+
+## Overview
+
+Chess Profile Analyzer is a web application that helps chess players analyze their game performance on Lichess.org. The app focuses on identifying which chess openings provide the best results for a player and provides insights into their strengths and weaknesses.
+
+By analyzing past games, the app helps players:
+
+-  Understand which openings they perform best with
+-  Track their rating progression over time
+-  Identify patterns in their gameplay
+
+The application uses the Lichess API to fetch game data and performs statistical analysis to provide actionable insights for chess improvement.
+
+[Live Demo](https://chess-profile-analyzer.vercel.app/)
+
+![Screnshot from app](./readme-images/app-1.png)
+![Screnshot from app](./readme-images/app-2.png)
+![Screnshot from app](./readme-images/app-3.png)
+
+## Key Features
+
+-  **Opening Analysis**: Identifies the most successful and frequently played openings for a given player
+-  **Performance Metrics**: Calculates win rates and rating changes for each opening
+-  **Game Filtering**: Filter analysis by game type, time control, and piece color
+-  **Rating History**: Visualizes rating progress over time with interactive charts
+-  **Game History**: Browse and review past games with details on openings played
+-  **User Profile Stats**: Displays comprehensive profile statistics and metrics
+-  **Responsive Design**: Works seamlessly on both desktop and mobile devices
+
+## Technologies Used
+
+### Frontend Technologies
+
+-  **Framework**: Next.js 13 (App Router) with TypeScript
+-  **State Management**: React Hooks and Context API
+-  **Data Fetching**: React Query (TanStack Query) for efficient API interaction
+-  **Form Handling**: React Hook Form with Zod validation
+-  **Styling**:
+   -  Tailwind CSS for utility-first styling
+-  **User Experience**:
+   -  React Hot Toast for notifications
+   -  React Spinners for loading states
+-  **Date Handling**: date-fns for date manipulation and formatting
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-```
+-  Node.js 16.8 or later
+-  npm or yarn
+-  A modern web browser
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Installation and Setup
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+1. Clone the repository:
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+   ```bash
+   git clone https://github.com/yourusername/chess-profile-analyzer.git
+   ```
 
-## Learn More
+2. Navigate to the project directory:
 
-To learn more about Next.js, take a look at the following resources:
+   ```bash
+   cd chess-profile-analyzer
+   ```
 
--  [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
--  [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+3. Install dependencies:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+   ```bash
+   npm install
+   ```
 
-## Deploy on Vercel
+4. Start the development server:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+   ```bash
+   npm run dev
+   ```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+5. Open [http://localhost:3000](http://localhost:3000) with your browser to see the application.
+
+6. Enter a Lichess.org username and configure your analysis preferences to start analyzing chess performance.
