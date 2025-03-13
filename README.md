@@ -70,7 +70,7 @@ The application uses the Lichess API to fetch game data and performs statistical
 1. Clone the repository:
 
    ```bash
-   git clone https://github.com/yourusername/chess-profile-analyzer.git
+   git clone https://github.com/radekrzepka/chess-profile-analyzer.git
    ```
 
 2. Navigate to the project directory:
